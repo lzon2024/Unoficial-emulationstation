@@ -1,5 +1,5 @@
-# Contributing to JELOS
-Welcome new contributor!  Your contribution will help JELOS become a better Linux distribution, so thank you! We want to make contributing to this project as easy and transparent as possible.  Contributors are able to:
+# Contributing to UnofficialOS
+Welcome new contributor!  Your contribution will help UnofficialOS become a better Linux distribution, so thank you! We want to make contributing to this project as easy and transparent as possible.  Contributors are able to:
 
 - Discuss the current state of the code
 - Submit a fix
@@ -7,7 +7,7 @@ Welcome new contributor!  Your contribution will help JELOS become a better Linu
 - Become a maintainer
 
 ## Becoming a maintainer
-When contributing to JELOS you are expected to become the maintainer of your contribution.  Please keep this in mind when submitting pull requests.
+When contributing to UnofficialOS you are expected to become the maintainer of your contribution.  Please keep this in mind when submitting pull requests.
 * Keep track of your contributions upstreams and keep your components up-to-date.
 * Watch the issue tracker and resolve issues related to your contribution.
 
@@ -17,7 +17,7 @@ We use Github to host code, to track issues and feature requests, as well as acc
 ## We Use [Github Flow](https://guides.github.com/introduction/flow/index.html), So All Code Changes Happen Through Pull Requests
 Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
 
-1. Join our discord and chat with us, we'll be happy to help you success with your change.
+1. Join our discord and chat with us, we'll be happy to help you successfully implement your change.
 2. Fork the repo and create your branch from `dev`.
 3. Ensure your code is built locally and tested.
 4. Any changes should be reflected in the documentation.
