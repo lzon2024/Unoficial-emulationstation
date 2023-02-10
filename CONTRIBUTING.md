@@ -18,10 +18,10 @@ We use Github to host code, to track issues and feature requests, as well as acc
 Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
 
 1. Join our discord and chat with us, we'll be happy to help you successfully implement your change.
-2. Fork the repo and create your branch from `uos-dev`.
+2. Fork the repo and create your branch from `dev`.
 3. Ensure your code is built locally and tested.
 4. Any changes should be reflected in the documentation.
-5. Issue a pull request back to our `uos-dev` branch.
+5. Issue a pull request back to our `dev` branch.
 
 ## Any contributions you make will be under the Apache 2 Software License
 In short, when you submit code changes, your submissions are understood to be contributed under the same license as the original project code or under [Apache 2](https://choosealicense.com/licenses/apache-2.0/) license when no other license applies.
