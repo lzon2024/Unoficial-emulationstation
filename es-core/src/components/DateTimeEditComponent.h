@@ -27,6 +27,7 @@ public:
 	void update(int deltaTime) override;
 	void render(const Transform4x4f& parentTrans) override;
 	void onSizeChanged() override;
+	bool changed();
 
 	// Set how the point in time will be displayed:
 	//  * DISP_DATE - only display the date.
@@ -52,6 +53,7 @@ private:
 	Utils::Time::DateTime mTime;
 	Utils::Time::DateTime mTimeBeforeEdit;
 
+	bool mChanged;
 	bool mEditing;
 	int mEditIndex;
 	DisplayMode mDisplayMode;

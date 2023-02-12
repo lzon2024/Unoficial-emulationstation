@@ -14,6 +14,7 @@ DateTimeEditComponent::DateTimeEditComponent(Window* window, DisplayMode dispMod
 
 	updateTextCache();
 	mAutoSize = true;
+	mChanged = false;
 }
 
 void DateTimeEditComponent::setDisplayMode(DisplayMode mode)
@@ -67,6 +68,7 @@ bool DateTimeEditComponent::input(InputConfig* config, Input input)
 
 		if(incDir != 0)
 		{
+			mChanged = true;
 			tm new_tm = mTime;
 
 			if(mEditIndex == 0)
@@ -96,6 +98,33 @@ bool DateTimeEditComponent::input(InputConfig* config, Input input)
 
 				if(new_tm.tm_year < 0)
 					new_tm.tm_year = 0;
+			}
+			else if(mEditIndex == 3)
+			{
+				new_tm.tm_hour += incDir;
+
+				if(new_tm.tm_hour < 0)
+					new_tm.tm_hour = 23;
+				else if(new_tm.tm_hour > 23)
+					new_tm.tm_hour = 0;
+			}
+			else if(mEditIndex == 4)
+			{
+				new_tm.tm_min += incDir;
+
+				if(new_tm.tm_min < 0)
+					new_tm.tm_min = 59;
+				else if(new_tm.tm_min > 59)
+					new_tm.tm_min = 0;
+			}
+			else if(mEditIndex == 5)
+			{
+				new_tm.tm_sec += incDir;
+
+				if(new_tm.tm_sec < 0)
+					new_tm.tm_sec = 59;
+				else if(new_tm.tm_sec > 59)
+					new_tm.tm_sec = 0;
 			}
 
 			//validate day
@@ -290,7 +319,26 @@ void DateTimeEditComponent::updateTextCache()
 	diff = end - start;
 	mCursorBoxes.push_back(Vector4f(start[0], start[1], diff[0], diff[1]));
 
-	//if mode == DISP_DATE_TIME do times too but I don't wanna do the logic for editing times because no one will ever use it so screw it
+	if(mode == DISP_DATE_TIME) {
+		//hour
+		start[0] = font->sizeText(dispString.substr(0, 11)).x();
+		end = font->sizeText(dispString.substr(0, 13));
+		diff = end - start;
+		mCursorBoxes.push_back(Vector4f(start[0], start[1], diff[0], diff[1]));
+
+		//minute
+		start[0] = font->sizeText(dispString.substr(0, 14)).x();
+		end = font->sizeText(dispString.substr(0, 16));
+		diff = end - start;
+		mCursorBoxes.push_back(Vector4f(start[0], start[1], diff[0], diff[1]));
+
+		//second
+		start[0] = font->sizeText(dispString.substr(0, 17)).x();
+		end = font->sizeText(dispString.substr(0, 19));
+		diff = end - start;
+		mCursorBoxes.push_back(Vector4f(start[0], start[1], diff[0], diff[1]));
+	}
+
 }
 
 void DateTimeEditComponent::setColor(unsigned int color)
@@ -341,4 +389,8 @@ void DateTimeEditComponent::applyTheme(const std::shared_ptr<ThemeData>& theme, 
 		setUppercase(elem->get<bool>("forceUppercase"));
 
 	setFont(Font::getFromTheme(elem, properties, mFont));
+}
+
+bool DateTimeEditComponent::changed() {
+	return mChanged;
 }
