@@ -107,58 +107,41 @@ GuiDateTimeUtil::GuiDateTimeUtil(Window* window)
 
 		addWithLabel(_("TIME ZONE"), tzChoices);
 		addSaveFunc([tzChoices] {
-				SystemConf::getInstance()->set("system.timezone", tzChoices->getSelected());
-				ApiSystem::getInstance()->setTimezone(tzChoices->getSelected());
-				});
+			SystemConf::getInstance()->set("system.timezone", tzChoices->getSelected());
+			ApiSystem::getInstance()->setTimezone(tzChoices->getSelected());
+		});
 	}
 #endif
 #endif
 
-  auto currentDateTime = Utils::Time::DateTime::now();
+  	auto currentDateTime = Utils::Time::DateTime::now();
 
 	auto tmDate = std::make_shared<DateTimeEditComponent>(mWindow, DateTimeEditComponent::DISP_DATE_TIME);
 	tmDate->setValue(currentDateTime);
 	addWithLabel(_("SET DATE/TIME"), tmDate);
-  addSaveFunc([this, tmDate] {
-      if (tmDate->changed()) {
+	addSaveFunc([this, tmDate] {
+		if (tmDate->changed()) {
 
-        auto new_dt = Utils::Time::stringToTime(tmDate->getValue(), "%Y%m%dT%H%M%S");
-        auto formatted_dt = Utils::Time::timeToString(new_dt, "%Y-%m-%d %H:%M:%S");
+			auto new_dt = Utils::Time::stringToTime(tmDate->getValue(), "%Y%m%dT%H%M%S");
+			auto formatted_dt = Utils::Time::timeToString(new_dt, "%Y-%m-%d %H:%M:%S");
 
-        std::string set_dt_cmd = "date -s \"" + formatted_dt + "\"";
+			std::string set_dt_cmd = "date -s \"" + formatted_dt + "\"";
 
-        std::string msg = _("Set the following date and time?\n") + formatted_dt;
-        mWindow->pushGui(new GuiMsgBox(mWindow, msg, _("YES"), [set_dt_cmd] {
-          runSystemCommand(set_dt_cmd, "", nullptr);
-          runSystemCommand("hwclock -w -u", "", nullptr);
-        }, "NO",nullptr));
-      }
-  });
+			std::string msg = "Set the following date and time?\n" +
+				formatted_dt + "\n" +
+				"Note: This will have no effect when connected\n"
+				"to a network with network time sync";
+			mWindow->pushGui(new GuiMsgBox(mWindow, msg, _("YES"), [set_dt_cmd] {
+			runSystemCommand(set_dt_cmd, "", nullptr);
+			runSystemCommand("hwclock -w -u", "", nullptr);
+			}, "NO",nullptr));
+		}
+	});
 
-
-  auto timesync_enabled = std::make_shared<SwitchComponent>(mWindow);
-  bool tsEnabled = SystemConf::getInstance()->get("nts.enabled") == "1";
-  timesync_enabled->setState(tsEnabled);
-  addWithLabel(_("NETWORK TIME SYNC"), timesync_enabled);
-
-  addSaveFunc([timesync_enabled] {
-    if (timesync_enabled->changed()) {
-      if (timesync_enabled->getState() == false) {
-        runSystemCommand("systemctl stop systemd-timesyncd", "", nullptr);
-        runSystemCommand("systemctl disable systemd-timesyncd", "", nullptr);
-      } else {
-        runSystemCommand("systemctl enable systemd-timesyncd", "", nullptr);
-        runSystemCommand("systemctl start systemd-timesyncd", "", nullptr);
-      }
-
-      SystemConf::getInstance()->set("nts.enabled", timesync_enabled->getState() ? "1" : "0");
-      SystemConf::getInstance()->saveSystemConf();
-    }
-  });
-
-  // Clock time format (14:42 or 2:42 pm)
+  	// Clock time format (14:42 or 2:42 pm)
 	auto tmFormat = std::make_shared<SwitchComponent>(mWindow);
 	tmFormat->setState(Settings::getInstance()->getBool("ClockMode12"));
 	addWithLabel(_("SHOW CLOCK IN 12-HOUR FORMAT"), tmFormat);
 	addSaveFunc([tmFormat] { if (tmFormat->changed()) Settings::getInstance()->setBool("ClockMode12", tmFormat->getState()); });
+
 }
